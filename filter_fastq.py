@@ -9,6 +9,8 @@
 import sys, argparse, re, gzip, os, threading, time
 from itertools import islice, izip
 import multiprocessing
+import logging
+logger = logging.getLogger()
 
 parser = argparse.ArgumentParser(description="Filter fastq file") 
 
@@ -92,17 +94,17 @@ def filter_pair(lines):
     seqid2 = lines[1].split()[0]
 
     if seqid1 != seqid2:
-        print "WARNING: out of sync pairs detected with ids %s %s" % (seqid1, seqid2)
+        logger.warning(f"out of sync pairs detected with ids {seqid1}, {seqid2}")
 
     if args.invert: 
         if seqid1 in filter_list: 
-            #print "Filtering ID r1 %s" % seqid1
+            logger.info(f"Filtering ID r1 {seqid1}")
             return False
         else:
             return lines
     else:
         if seqid1 in filter_list: 
-            #print "Keeping ID r1 %s" % seqid1
+            logger.info(f"Keeping ID r1 {seqid1}")
             return lines
         else: 
             return False
@@ -113,13 +115,13 @@ def filter_read(lines):
 
     if args.invert: 
         if seqid in filter_list: 
-            #print "Filtering ID r1 %s" % seqid1
+            logger.info(f"Filtering ID r1 {seqid1}")
             return False
         else:
             return lines
     else:
         if seqid in filter_list: 
-            #print "Keeping ID r1 %s" % seqid1
+            logger.info(f"Keeping ID r1 {seqid1}")
             return lines
         else: 
             return False
