@@ -7,7 +7,7 @@
 # SNF March 2016
 
 import sys, argparse, re, gzip, os, threading, time
-from itertools import islice, izip
+from itertools import islice
 import multiprocessing
 import logging
 logger = logging.getLogger()
@@ -131,11 +131,11 @@ n_filtered = 0
 pool = multiprocessing.Pool(processes=args.num_threads) 
 
 if paired: 
-    # the izip below makes an iterator that loops over both files in sets of four. should be parallel-safe
-    res = pool.imap(filter_pair, izip(*[infile_read1, infile_read2]*4))
+    # the zip below makes an iterator that loops over both files in sets of four. should be parallel-safe
+    res = pool.imap(filter_pair, zip(*[infile_read1, infile_read2]*4))
 else: 
     # one-file iterator 
-    res = pool.imap(filter_read, izip(*[infile]*4))
+    res = pool.imap(filter_read, zip(*[infile]*4))
 
 while 1: 
     if not n_reads % 1000000:
