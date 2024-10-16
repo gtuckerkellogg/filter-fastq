@@ -82,7 +82,7 @@ else: # paired
 
     sys.stderr.write("Filtering reads from paired files %s and %s.\n" % (args.read1, args.read2)) 
     
-filter_list = [i.strip() for i in open(args.filter_file)]
+filter_list = [i.strip().split()[0] for i in open(args.filter_file)]
 
 sys.stderr.write("Read %d identifiers to filter.\n" % len(filter_list))
 
